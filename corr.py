@@ -48,3 +48,13 @@ def calcular_correlaciones(data, columnas):
     return df_resultados
 
 
+def matriz_correlacion(df, metodo='pearson'):
+    if metodo == 'pearson':
+        return df.corr(method='pearson')
+    elif metodo == 'spearman':
+        return df.apply(lambda x: df.apply(lambda y: calcular_correlacion_spearman(x, y)), axis=0)
+    elif metodo == 'kendall':
+        return df.apply(lambda x: df.apply(lambda y: calcular_correlacion_kendall(x, y)), axis=0)
+    else:
+        raise ValueError("Método de correlación no válido. Use 'pearson', 'spearman' o 'kendall'.")
+
