@@ -31,5 +31,20 @@ def calcular_correlacion_kendall(x, y):
     tau = (concordant - discordant) / np.sqrt((concordant + discordant) * (n * (n - 1) / 2))
     return tau
 
+def calcular_correlaciones(data, columnas):
+    resultados = []
+    for columna in columnas:
+        # Calcular los coeficientes de correlación
+        pearson_corr, _ = pearsonr(data[columna], data['species'].astype('category').cat.codes)
+        spearman_corr = calcular_correlacion_spearman(data[columna], data['species'].astype('category').cat.codes)
+        kendall_corr = calcular_correlacion_kendall(data[columna], data['species'].astype('category').cat.codes)
+        
+        # Guardar los resultados en una lista
+        resultados.append([columna, pearson_corr, spearman_corr, kendall_corr])
+    
+    # Crear un DataFrame con los resultados
+    df_resultados = pd.DataFrame(resultados, columns=['Atributo', 'Pearson', 'Spearman', 'Kendall'])
+    
+    return df_resultados
 
 
